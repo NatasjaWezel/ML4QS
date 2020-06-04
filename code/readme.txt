@@ -1,0 +1,1 @@
+Install your virtual environment here (in a folder named ml4qs_env or add it to the gitignore) and install the requirements in that. I used WSL.
