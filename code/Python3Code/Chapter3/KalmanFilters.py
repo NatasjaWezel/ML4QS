@@ -11,16 +11,23 @@ import numpy as np
 from pykalman import KalmanFilter
 
 # Implements the Kalman filter for single columns.
+
+
 class KalmanFilters:
 
     # Very simple Kalman filter: fill missing values and remove outliers for single attribute.
     # We assume a very simple transition matrix, namely simply a [[1]]. It
     # is however still useful as it is able to dampen outliers and impute missing values. The new
     # values are appended in a new column.
+    def __init__(self, transition=[[1]], observation=[[1]]):
+        self.transition_matrices = transition
+        self.observation_matrices = observation
+
     def apply_kalman_filter(self, data_table, col):
 
         # Initialize the Kalman filter with the trivial transition and observation matrices.
-        kf = KalmanFilter(transition_matrices=[[1]], observation_matrices=[[1]])
+        kf = KalmanFilter(transition_matrices=self.transition_matrices,
+                          observation_matrices=self.observation_matrices)
 
         numpy_array_state = data_table[col].values
         numpy_array_state = numpy_array_state.astype(np.float32)
@@ -30,7 +37,8 @@ class KalmanFilters:
         kf = kf.em(numpy_matrix_state_with_mask, n_iter=5)
 
         # And apply the filter.
-        (new_data, filtered_state_covariances) = kf.filter(numpy_matrix_state_with_mask)
+        (new_data, filtered_state_covariances) = kf.filter(
+            numpy_matrix_state_with_mask)
 
         data_table[col + '_kalman'] = new_data
         return data_table
