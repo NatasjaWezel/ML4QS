@@ -75,20 +75,18 @@ def local_oulier(dataset, col, d):
     return len([outlier for outlier in ds['lof'] if outlier])
 
 
-'''
-
 for outlier_column in outlier_columns:
 
     print(dataset[outlier_column])
-    plt.hist(dataset[outlier_column], bins=50)
+    plt.hist(dataset[outlier_column], bins=200)
     plt.title(f'Histogram of measurements for col {outlier_column}')
     plt.show()
-
+'''
 for col in outlier_columns:
     outliers = np.zeros(30)
     c_values = np.linspace(.05, 4, num=30)
     for i, c in enumerate(c_values):
-        number_outliers = chauvenet_outliers(c, col, dataset)        
+        number_outliers = chauvenet_outliers(c, col, dataset)
         outliers[i] = number_outliers
     plt.plot(c_values, outliers)
     plt.xlabel('c')
@@ -97,20 +95,19 @@ for col in outlier_columns:
     plt.show()
 
 for col in outlier_columns:
-    k=1
     if col == 'acc_phone_x':
-        k=3
-    outliers = np.zeros(30)
-    c_values = np.linspace(.05, 4, num=30)
-    for i, c in enumerate(c_values):
-        number_outliers = mixture(k, col, dataset, c=c)        
+        k = 3
+    outliers = np.zeros(78)
+    k_values = range(2, 80)  # np.linspace(.05, 4, num=30)
+    for i, k in enumerate(k_values):
+        number_outliers = mixture(k, col, dataset, c=6)
         outliers[i] = number_outliers
-    plt.plot(c_values, outliers)
-    plt.xlabel('c')
+    plt.plot(k_values, outliers)
+    plt.xlabel('K')
     plt.ylabel('Number outliers')
-    plt.title(f'Number of outliers dependent on c for column {col} using mixture model k={k}')
+    plt.title(
+        f'Number of outliers dependent on K for column {col} using mixture model c=2')
     plt.show()
-
 for col in outlier_columns:
     outliers = np.zeros((10, 10))
     dmin = np.linspace(.8, 2., num=10)
@@ -125,7 +122,6 @@ for col in outlier_columns:
     plt.ylabel('fmin')
     plt.title(f'Number of outliers dependent on c for column {col}')
     plt.show()
-'''
 
 
 for col in outlier_columns:
@@ -140,3 +136,16 @@ for col in outlier_columns:
     plt.title(
         f'Number of outliers dependent on c for column {col} using mixture model k={k}')
     plt.show()
+'''
+'''
+outliers = np.zeros(5)
+ds = (2, 4, 6, 8, 14) #range(3, 10)  # np.linspace(4, 6, num=10)
+for i, k in enumerate(ds):
+    outliers[i] = local_oulier(dataset, col, k)
+plt.plot(ds, outliers)
+plt.xlabel('k')
+plt.ylabel('Number outliers')
+plt.title(
+    f'Number of outliers dependent on c for column {col} using mixture model k={k}')
+plt.show()
+'''
