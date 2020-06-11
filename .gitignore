@@ -3,7 +3,6 @@ env/
 
 # book figures etc
 code/Python3Code/figures/
-code/Python3Code/intermediate_datafiles/
 
 *.pyc
 
