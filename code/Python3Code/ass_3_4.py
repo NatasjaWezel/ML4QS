@@ -128,13 +128,17 @@ dataset_large.index = pd.to_datetime(dataset_large.index)
 
 for ds in DATASETS:
     dataset = DATASETS[ds]
+    imputed_mean = deepcopy(dataset)
+    imputed_median = deepcopy(dataset)
+    imputed_interpol = deepcopy(dataset)
     for c in dataset.columns:
         MisVal = ImputationMissingValues()
-        imputed_mean_dataset = MisVal.impute_mean(
-            deepcopy(dataset), c)
-        imputed_median_dataset = MisVal.impute_median(
-            deepcopy(dataset), c)
-        imputed_interpolation_dataset = MisVal.impute_interpolate(
-            deepcopy(dataset), c)
-        viz.plot_imputed_values(dataset, ['original', 'mean', 'interpolation'], c,
-                                imputed_mean_dataset[c], imputed_interpolation_dataset[c])
+        imputed_mean[c] = MisVal.impute_mean(
+            imputed_mean, c)[c]
+        imputed_median = MisVal.impute_median(
+            imputed_median, c)
+        imputed_interpol[c] = MisVal.impute_interpolate(
+            imputed_interpol, c)[c]
+        print(c, [val for val in imputed_mean[c] if val != val])
+        # viz.plot_imputed_values(dataset, ['original', 'mean', 'interpolation'], c,
+        #                      imputed_mean[c], imputed_interpol[c])
