@@ -154,9 +154,9 @@ class VisualizeDataset:
         data_table.loc[:,:] = data_table.dropna(axis=0, subset=[col, outlier_col])
         data_table.loc[:,outlier_col] = data_table[outlier_col].astype('bool')
         f, xar = plt.subplots()
-        xfmt = md.DateFormatter('%H:%M')
-        xar.xaxis.set_major_formatter(xfmt)
-        plt.xlabel('time')
+        #xfmt = md.DateFormatter('%H:%M')
+        #xar.xaxis.set_major_formatter(xfmt)
+        plt.xlabel('time ms')
         plt.ylabel('value')
         # Plot data points that are outliers in red, and non outliers in blue.
         xar.plot(data_table.index[data_table[outlier_col]], data_table[col][data_table[outlier_col]], 'r+')
